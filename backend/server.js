@@ -2,15 +2,17 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 
-app.use(cors()); // 프론트엔드 리액트랑 대화할 수 있게 허락해주는 기능
-app.use(express.json()); // JSON이라는 데이터를 주고받게 해주는 기능
+// 서버 설정: 외부 도메인(React 등)에서의 접속을 허용하고 JSON 데이터 처리를 활성화합니다.
+app.use(cors());
+app.use(express.json());
 
-// 인터넷 주소창에 내 서버 주소를 치면 나올 메시지
+// 기본 경로(Root) 접속 시 서버 상태 확인을 위한 응답을 전송합니다.
 app.get('/', (req, res) => {
-  res.send('백엔드 대장님 출근 완료! 서버가 잘 돌아갑니다 🚀');
+  res.send('Star_Spot 백엔드 서버가 정상적으로 구동 중입니다.');
 });
 
-// 서버가 몇 번 방(포트)에서 기다릴지 정하기
-app.listen(5000, () => {
-  console.log('서버가 5000번 포트에서 기다리고 있어요!');
+// 서버 포트 설정 및 대기 상태 시작
+const PORT = 5000;
+app.listen(PORT, () => {
+  console.log(`[안내] 서버가 ${PORT}번 포트에서 안정적으로 실행되었습니다.`);
 });
