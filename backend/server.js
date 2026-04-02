@@ -1,18 +1,48 @@
 const express = require('express');
 const cors = require('cors');
+const os = require('os'); // 내 컴퓨터의 네트워크 정보를 가져오는 도구
 const app = express();
 
-// 서버 설정: 외부 도메인(React 등)에서의 접속을 허용하고 JSON 데이터 처리를 활성화합니다.
+// 라우터 불러오기
+const userRoute = require('./src/routes/userRoute');
+
+// 1. 미들웨어 설정
 app.use(cors());
 app.use(express.json());
 
-// 기본 경로(Root) 접속 시 서버 상태 확인을 위한 응답을 전송합니다.
+// 2. API 경로 설정
+app.use('/api/users', userRoute);
+
+// 3. 기본 홈 경로
 app.get('/', (req, res) => {
-  res.send('Star_Spot 백엔드 서버가 정상적으로 구동 중입니다.');
+    res.send('Star_Spot 백엔드 서버가 가동 중입니다.');
 });
 
-// 서버 포트 설정 및 대기 상태 시작
+// 4. 서버 실행 및 내 IP 주소 출력 기능
 const PORT = 5000;
+
+// 내 컴퓨터의 IPv4 주소를 찾는 함수
+function getLocalIp() {
+    const interfaces = os.networkInterfaces();
+    for (const devName in interfaces) {
+        const iface = interfaces[devName];
+        for (let i = 0; i < iface.length; i++) {
+            const alias = iface[i];
+            if (alias.family === 'IPv4' && alias.address !== '127.0.0.1' && !alias.internal) {
+                return alias.address;
+            }
+        }
+    }
+    return 'localhost';
+}
+
+const myIp = getLocalIp();
+
 app.listen(PORT, () => {
-  console.log(`[안내] 서버가 ${PORT}번 포트에서 안정적으로 실행되었습니다.`);
+    console.log(`================================================`);
+    console.log(`[시스템] Star_Spot 백엔드 서버 가동 성공!`);
+    console.log(`[로컬 주소] http://localhost:${PORT}`);
+    console.log(`[네트워크 주소] http://${myIp}:${PORT}`);
+    console.log(`================================================`);
+    console.log(`※ 프론트엔드 담당자에게 '네트워크 주소'를 공유해주세요.`);
 });
