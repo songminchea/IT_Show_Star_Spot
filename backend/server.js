@@ -1,3 +1,4 @@
+const db = require('./src/config/db'); // DB 연결 코드 불러오기
 const express = require('express');
 const cors = require('cors');
 const os = require('os'); // 내 컴퓨터의 네트워크 정보를 가져오는 도구
